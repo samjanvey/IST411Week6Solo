@@ -1,4 +1,12 @@
-
+/* 
+Project: Lesson 6 - Solo Work
+Purpose Details: Write Student Objects to JSON file and read back and display to console
+Course: IST 411
+Author: Sam Janvey
+Date Developed: 2/25/20
+Last Date Changed: 2/25/20
+Revision: 3
+*/
 package jsonsolo;
 
 public class Student {
@@ -14,6 +22,10 @@ public class Student {
         this.GPA = gpa;
         this.currentCredits = currCredit;
         this.totalCredits = totalCredit;
+    }
+    
+    public Student() {
+        
     }
 
     /**

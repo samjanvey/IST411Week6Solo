@@ -1,26 +1,35 @@
-
+/* 
+Project: Lesson 6 - Solo Work
+Purpose Details: Write Student Objects to JSON file and read back and display to console
+Course: IST 411
+Author: Sam Janvey
+Date Developed: 2/25/20
+Last Date Changed: 2/25/20
+Revision: 3
+*/
 package jsonsolo;
         
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.json.JsonValue;
 import javax.json.JsonWriter;
 
 public class JSONSolo {
     
     public static void main(String[] args) throws IOException {
-        System.out.println("Starting JSON project...");
+        System.out.println("Starting JSON project...\n");
         
         // Create the JSON Object
         try {
@@ -74,7 +83,35 @@ public class JSONSolo {
         }
     }
     
-    public static void displayJSON() {
-        // TO DO
+    public static void displayJSON() throws FileNotFoundException {
+        File jsonFile = new File("Student.json");
+        try (InputStream inputStream = new FileInputStream(jsonFile);
+            JsonReader reader = Json.createReader(inputStream);){
+            JsonArray studentArray = reader.readArray();
+            reader.close();
+                        
+            List<Student> studentList = new ArrayList<Student>();
+            for (JsonValue jsonValue : studentArray) {
+                if(JsonValue.ValueType.OBJECT == jsonValue.getValueType()) {
+                    JsonObject jsonObject = (JsonObject) jsonValue;
+                    Student student = new Student();
+                    student.setfName(jsonObject.getString("firstName"));
+                    System.out.println("First Name: " + student.getfName());
+                    student.setlName(jsonObject.getString("lastName"));
+                    System.out.println("Last Name: " + student.getlName());
+                    student.setGPA(jsonObject.getInt("gpa"));
+                    System.out.println("GPA: " + student.getGPA());
+                    student.setCurrentCredits(jsonObject.getInt("currentCredits"));
+                    System.out.println("Current Credits: " + student.getCurrentCredits());
+                    student.setTotalCredits(jsonObject.getInt("totalCredits"));
+                    System.out.println("Total Credits: " + student.getTotalCredits() + '\n');
+                    System.out.println("****************************\n");
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException ex) {
+            
+        }
     }
 }
